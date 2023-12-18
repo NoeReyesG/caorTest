@@ -1,0 +1,50 @@
+body{
+    background-color: #efefef;
+
+}
+
+section{
+    margin: 50px;
+}
+
+.container{
+    margin: 50px;
+}
+.table-latitude {
+    width: 100%;
+    caption {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #FFC107
+        ;
+        text-align: center;
+    }
+    thead {
+        border-top: 2px solid #FFC107
+        ;
+        border-bottom: 2px solid #FFC107
+        ;
+        th {
+            text-transform: uppercase;
+            text-align: center;
+            padding: 10px;
+            color: #006ac6;
+            border: 1px solid #F1F1F1;
+        }
+    }
+    tbody {
+        tr {
+            border-bottom: 1px solid #F1F1F1;
+            color: #75787b;
+            text-align: center;
+            td {
+                padding: 10px;
+                border: 1px solid #F1F1F1;
+            }
+            th {
+                padding-left: 10px;
+                border: 1px solid #F1F1F1;
+            }
+        }
+    }
+}
