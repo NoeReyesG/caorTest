@@ -50,6 +50,7 @@ export class AppComponent implements OnInit{
       
   });
 
+  //Aquí almacenaremos las ordenes del pedido
   orders: Order[]=[];
 
   constructor(
@@ -57,21 +58,23 @@ export class AppComponent implements OnInit{
     private _snackBar: MatSnackBar,
   ) { }
 
-  
+  /**
+   * ngOnInit
+   */
   ngOnInit(): void {
   }
 
 
+  /**
+   * Precarga los datos pasillo y precio en el formulario al seleccionar el id del item
+   * @param {number} skuValue el id del item en la base de datos que se ha seleccionado
+   */
   selectedId(skuValue: number): void{
-    //this.selectedSku = event.value;
-    console.log(skuValue);
     let item: Sku = this.Database.find(({sku}) => sku == skuValue);
-  
+    //Precargamos los valores en el formulario  
     this.packageForm.get('price').setValue(item.precio);  
-    this.packageForm.get('aisle').setValue(item.pasillo); 
-    //this.packageForm.get('aisle').setValue(skuValue); 
+    this.packageForm.get('aisle').setValue(item.pasillo);  
     
-    console.log(this.packageForm);
   }
 
   /**
@@ -79,8 +82,7 @@ export class AppComponent implements OnInit{
    */
   addOrder(): void{
     if (this.packageForm.valid){
-      let order: Order = this.packageForm.getRawValue();
-      
+      const order: Order = this.packageForm.getRawValue();
       this.orders.push(order);
       this.packageForm.reset();
       this.openSnackBar('Se agregó orden al pedido correctamente');  
@@ -92,26 +94,22 @@ export class AppComponent implements OnInit{
     }
   }
 
+  /**
+   * Muestra mensaje en snackBar
+   * @param {string} message mensaje a mostrar en el snackbar 
+   */
   openSnackBar(message: string):void {
-    if (this.packageForm.valid){
-      this._snackBar.open(message, 'X', {duration:4000});
-    }
-    else{
-      this._snackBar.open(message, 'X', {duration:4000});
-    }    
+    this._snackBar.open(message, 'X', {duration:4000});   
   }
 
   /**
-   * 
-   * @param {number} order
-   * Recibe el número de una orden y quita esa orden del arreglo de los pedidos (orders) 
+   * Recibe el número de una orden y quita esa orden del arreglo de los pedidos (orders)
+   * @param {number} index indice del elemento del arreglo
+   *  
    */
   deleteElement(index: number): void{
-    
     this.orders.splice(index, 1);
-    this._snackBar.open('La orden se eliminó con éxito', 'X', {duration:4000} );
-    
-    //console.log(item);       
+    this.openSnackBar('La orden se eliminó con éxito');         
   }
 
 }
