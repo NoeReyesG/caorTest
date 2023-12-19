@@ -6,6 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon'
+
 
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Sku } from '../models/sku';
@@ -16,7 +18,7 @@ import { Order } from '../models/order';
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, MatFormFieldModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule],
+  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, MatFormFieldModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatIconModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   
@@ -77,7 +79,8 @@ export class AppComponent implements OnInit{
    */
   addOrder(): void{
     if (this.packageForm.valid){
-      const order = this.packageForm.getRawValue();
+      let order: Order = this.packageForm.getRawValue();
+      
       this.orders.push(order);
       this.packageForm.reset();
       this.openSnackBar('Se agregó orden al pedido correctamente');  
@@ -95,9 +98,20 @@ export class AppComponent implements OnInit{
     }
     else{
       this._snackBar.open(message, 'X', {duration:4000});
-    }
-    
+    }    
   }
 
+  /**
+   * 
+   * @param {number} order
+   * Recibe el número de una orden y quita esa orden del arreglo de los pedidos (orders) 
+   */
+  deleteElement(index: number): void{
+    
+    this.orders.splice(index, 1);
+    this._snackBar.open('La orden se eliminó con éxito', 'X', {duration:4000} );
+    
+    //console.log(item);       
+  }
 
 }

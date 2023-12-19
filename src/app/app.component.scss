@@ -3,6 +3,17 @@ body{
 
 }
 
+.header{
+    background-color: #FFC107;
+    height: 50px;
+    border-bottom-right-radius: 250px 100px;
+}
+
+.header-blue{
+    background-color: #006ac6;
+    height: 20px;
+    border-bottom-right-radius: 250px 100px; 
+}
 section{
     margin: 50px;
 }
@@ -47,4 +58,8 @@ section{
             }
         }
     }
+}
+
+.trash-icon:hover {
+     cursor: pointer;
 }

@@ -1,8 +1,14 @@
+<header>
+  <div class="header">
+    <div class="header-blue"></div>
+  </div>
+ 
+</header>
 <section>
 
   <h2 >Capturar Pedido</h2>
 
-  <form  style="margin: 10px; display:flex" [formGroup]="packageForm">
+  <form  style="margin: 10px; display:flex; flex-wrap: wrap" [formGroup]="packageForm">
 
     <div style="margin: 10px">
       <mat-form-field>
@@ -17,8 +23,11 @@
   
     <div style="margin: 10px">
       <mat-form-field>
-      <mat-label for="quantity">Cantidad</mat-label>
-      <input matInput placeholder="ingresa cantidad" type="number" [formControlName]="'quantity'" name="quantity" id="quantity">
+        <mat-label for="quantity">Cantidad</mat-label>
+        <input matInput placeholder="ingresa cantidad" type="number" min="1" [formControlName]="'quantity'" name="quantity" id="quantity">
+        @if (packageForm.get('quantity').value <= 0){
+        <mat-error>Ingresa un entero positivo</mat-error>
+        }  
       </mat-form-field>
     </div>
 
@@ -64,22 +73,31 @@
                 <caption>Pedido</caption>
                 <thead>
                   <tr>
+                    <th>No. de Orden</th>
                     <th>Id</th>
                     <th>Cantidad</th>
                     <th>Pasillo</th>
                     <th>Precio</th>
                     <th>Tipo</th>
+                    <th>Eliminar</th>
                   </tr>
                 </thead>
              
               <tbody>
-              <tr *ngFor="let order of orders">
+              @for (order of orders; track order.sku; let index = $index){
+              <tr>
+                
+                <td>{{index + 1}}</td>
                 <td>{{order.sku}}</td>
                 <td>{{order.quantity}}</td>
                 <td>{{order.aisle}}</td>
                 <td>{{order.price | currency}}</td>
                 <td>{{order.type}}</td>
+                <td (click)="deleteElement(index)"><mat-icon class="trash-icon">delete_forever</mat-icon></td>
               </tr>
+            }
+            @empty {
+            }
               </tbody>
           </table>
       </div>
