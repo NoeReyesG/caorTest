@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/caor",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/browser",
+        "destination": "index.html"
+      }
+    ]
+  }
+}

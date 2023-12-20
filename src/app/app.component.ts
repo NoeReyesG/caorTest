@@ -7,11 +7,17 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon'
-
-
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+
+
+
 import { Sku } from '../models/sku';
 import { Order } from '../models/order';
+import { imgPDF } from '../assets/imgB64';
+
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
 
@@ -28,7 +34,8 @@ import { Order } from '../models/order';
 export class AppComponent implements OnInit{
   title = 'caor';
 
-  //Hardcodeamos los valores de la database, pero le creamos una interface para que este tipada
+  imgPDF:string = imgPDF; 
+  //Hardcodeamos los valores de la "database" proporcionada, pero le creamos una interface para que este tipada
   Database: Sku[] = [
     {sku: 1, pasillo: 1, precio: 10.00},
     {sku: 2, pasillo: 1, precio: 15.00},
@@ -38,14 +45,13 @@ export class AppComponent implements OnInit{
     {sku: 6, pasillo: 2, precio: 8.00},
   ]
 
-  selectedSku: Sku;
 
   //Creamos el formulario que vincularemos para agregar un pedido a una orden 
   packageForm: FormGroup = new FormGroup ({
       sku: new FormControl (null, Validators.required),
-      aisle: new FormControl<number> ({value: null, disabled: true}, Validators.required),
-      price: new FormControl<number> ({value: null, disabled: true}, Validators.required),
       quantity: new FormControl<number> (null, Validators.required),
+      aisle: new FormControl<number> ({value: null, disabled: true}, Validators.required),
+      price: new FormControl<number> ({value: null, disabled: true}, Validators.required), 
       type: new FormControl<string> ('', Validators.required),
       
   });
@@ -111,5 +117,54 @@ export class AppComponent implements OnInit{
     this.orders.splice(index, 1);
     this.openSnackBar('La orden se eliminó con éxito');         
   }
+
+  /**
+   * Genera un PDF con el pedido capturado, usando la librería pdfMake
+   */
+  createPDF(){
+    let arrayOrder: any[][]=[];
+    //generamos un array 2d con los valores de los pedidos para tener el formato necesitado en la tabla creada con la librería pdfMake
+    this.orders.forEach((value, index) => {
+      const values = Object.values(value);
+      values.unshift(index+1);  
+      arrayOrder.push(values);
+    })
+
+   
+    const pdfContent = {
+      content: [
+         {
+          image: this.imgPDF,
+          fit: [120, 120],
+          margin: [0, 0, 10, 10],
+          alignment:'center',
+        },
+        {
+          text: '\nPedido',
+          style: 'header',
+        },
+       
+        {
+          table: {
+            widths: [70, 70, 70, 70, 70, 90],
+            body: [
+              ['No de Orden', 'ID', 'Cantidad', 'Pasillo', 'Precio', 'Tipo'],
+              ...arrayOrder,
+            ],
+          },
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 14,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 0, 10, 10],
+        },
+    },
+  }
+    pdfMake.createPdf(pdfContent).open();
+  }
+
 
 }
