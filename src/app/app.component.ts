@@ -7,6 +7,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon'
+import { MatCheckboxModule } from '@angular/material/checkbox'
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -24,7 +25,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, MatFormFieldModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatIconModule],
+  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, MatFormFieldModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatIconModule, MatCheckboxModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   
@@ -33,7 +34,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export class AppComponent implements OnInit{
   title = 'caor';
-
+  enableButtonPDF: boolean = true;
   imgPDF:string = imgPDF; 
   //Hardcodeamos los valores de la "database" proporcionada, pero le creamos una interface para que este tipada
   Database: Sku[] = [
@@ -116,6 +117,14 @@ export class AppComponent implements OnInit{
   deleteElement(index: number): void{
     this.orders.splice(index, 1);
     this.openSnackBar('La orden se eliminó con éxito');         
+  }
+
+  /**
+   * Recibe un boleano de un checkbox y habilita o deshabilita el boton para imprimir PDF
+   * @param {bool} checked 
+   */
+  enablePDFButton(checked: boolean): void{
+    this.enableButtonPDF = !checked;
   }
 
   /**

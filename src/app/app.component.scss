@@ -63,3 +63,10 @@ section{
 .trash-icon:hover {
      cursor: pointer;
 }
+
+.printPDF {
+    display:flex;
+    padding: 10px;
+    justify-content: flex-end;
+    gap:20px;    
+}

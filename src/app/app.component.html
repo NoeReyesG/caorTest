@@ -62,8 +62,12 @@
   </form>
 </section>
 
-<button (click)="createPDF();">Imprimir Pedido</button>
+
 <div class="container" *ngIf="orders.length > 0">
+  <div class="printPDF">
+    <mat-checkbox (change)="enablePDFButton($event.checked)">Confirmar pedido</mat-checkbox>
+    <button mat-raised-button [disabled]="enableButtonPDF" (click)="createPDF();">Imprimir Pedido</button>
+  </div>
   <div class="panel panel-default">
       <div class="panel-heading">
           <h1>Pedidos</h1>
