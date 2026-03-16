@@ -106,7 +106,7 @@ export class AppComponent implements OnInit{
    * @param {string} message mensaje a mostrar en el snackbar 
    */
   openSnackBar(message: string):void {
-    this._snackBar.open(message, 'X', {duration:4000});   
+    this._snackBar.open(message, '×', {duration:4000});   
   }
 
   /**
